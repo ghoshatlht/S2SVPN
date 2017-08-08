@@ -1,0 +1,38 @@
+## YAML Template.
+---
+- hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+
+    user: "user"
+    password: "pass"
+    s2s_rest_api_url: "http://127.0.0.1:15672/api"
+    
+    
+
+    rabbitq_user_request_body:
+      password: "test"
+      tags: ""
+
+    rabbitmq_permissions_sensu_request_body:
+      configure: ".*"
+      write: ".*"
+      read: ".*"
+      
+  tasks:
+    - name: check if ciscors is present
+      uri:
+        url: "{{ s2s_rest_api_url }}/vhosts/{{ ciscors }}"
+        method: GET
+        user: "{{ user }}"
+        password: "{{ password }}"
+        force_basic_auth: yes
+        status_code: 200,404
+        timeout: 10
+      register: request_vhost
+      
+    - name: debug
+      debug:
+       var: request_vhost  

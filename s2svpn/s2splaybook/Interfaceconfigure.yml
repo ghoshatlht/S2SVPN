@@ -1,0 +1,31 @@
+## YAML Template.
+---
+- name: Configure remote devices
+  hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  vars:
+    cli:
+        username: "{{ user }}"
+        password: "{{ pass }}"
+        transport: cli
+
+  tasks:
+    - name: Configure interface settings
+      ios_config:
+        lines:
+          - description test interface
+          - ip address 172.168.100.10 255.255.255.0
+        parents: interface Ethernet6/0
+        provider: "{{ cli }}"
+        
+        
+    - name: Configure EIGRP
+      ios_config:
+        lines:
+          - router eigrp 2
+          - network 192.168.101.1
+          - network 172.168.100.10 
+          
+        provider: "{{ cli }}"  

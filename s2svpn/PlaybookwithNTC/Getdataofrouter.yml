@@ -1,0 +1,21 @@
+## YAML Template.
+---
+
+- name: GET STRUCTURED DATA BACK FROM CLI DEVICES
+  hosts: ciscors
+  connection: local
+  gather_facts: true
+
+  tasks:
+   - name: Show ip interface brief in JSON
+      ntc_show_command:
+         connection: ssh
+         template_dir: "/home/samya/s2svpn/PlaybookwithNTC/ntc-ansible/ntc-templates/templates"
+         platform: cisco_ios
+         command: Show ip interface brief in JSON
+         host: "{{ inventory_hostname }}"  
+         username: "{{ user }}"
+         password: "{{ pass }}"
+      register: result
+
+    - debug: var=result
